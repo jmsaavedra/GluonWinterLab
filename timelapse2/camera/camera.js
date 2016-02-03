@@ -287,7 +287,7 @@ function handleFile(filename, _currentTake){
     var postURL = (_currentTake !== null)? downloadURL + _currentTake: downloadURL;
     console.log("handleFile hit, currentTake= "+_currentTake + ", postURL = "+postURL);
     fs.stat(filename, function(err, stats) {
-      fs.writeFile(__dirname+'/img_'+_currentTake, filename, 'jpg', function(e){
+      fs.writeFile(__dirname+'/img_'+_currentTake+'.jpg', filename, function(e){
         if(e) console.log("error writeFile:", e);
       });
       // console.log("posting to: "+ postURL);
