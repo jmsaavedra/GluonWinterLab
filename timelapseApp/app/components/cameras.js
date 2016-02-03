@@ -12,7 +12,7 @@ var _         = require('lodash'),
 /*
 */
 function Cameras(_cb){
-  
+
   // var self = this;
   this.cameras_ = null;
   var self = this;
@@ -22,9 +22,9 @@ function Cameras(_cb){
       console.log(chalk.red.inverse(" >>> NO CAMERAS FOUND <<< "));
       return _cb("no cameras found");
     }
-    if (list.length < 4){
+    if (list.length < global.NUM_CAMERAS){
       console.log(chalk.red.inverse(" >>> NOT ALL CAMERAS FOUND <<< "));
-      return _cb("only "+list.length+" cameras found!");   
+      return _cb("only "+list.length+" cameras found!");
     }
     // var camera = list[0];
     self.cameras_ = list;
@@ -39,9 +39,9 @@ function Cameras(_cb){
       cb();
     }, function(_e){
       if(_e) return _cb(_e);
-      
+
         _cb(null);
-      
+
       // this.takePhotos(function(er){
       //   _cb(er);
       // });
@@ -68,7 +68,7 @@ Cameras.prototype.takePhotos = takePhotos = function(_cb){
     cam.takePicture({
       download:true
       }, function (er, data) {
-        
+
         if(!data){
           //var _thisCamIdx = _.findIndex(self.cameras_, { 'id': cam.id });
           //self.cameras_.splice(_thisCamIdx, 1);
@@ -76,7 +76,7 @@ Cameras.prototype.takePhotos = takePhotos = function(_cb){
         }
         var filePath = global.RAW_IMG_FOLDER+'/'+now+'_cam'+'_'+cam.id+'.jpg';
         //TODO: async!
-        fs.writeFileSync(filePath, data); 
+        fs.writeFileSync(filePath, data);
         cb(er);
       });
     }, function(e){

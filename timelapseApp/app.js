@@ -37,6 +37,7 @@ global.RAW_IMG_FOLDER   = path.join(__dirname,'_images-to-upload');
 global.SAVE_IMG_FOLDER  = path.join(__dirname, '_uploaded-images');
 global.chalk            = require('chalk');
 global.UPLOAD_FLAG      = false;
+global.NUM_CAMERAS      = 1; //how many cameras are connected via USB?
 
 /* Custom Modules */
 var Scheduler   = require('./app/components/scheduler');
@@ -109,9 +110,8 @@ watchr.watch({
       latestImages.push({camera: imgCt, rawPath: filePath, path: path.join(today,path.basename(filePath))});
       /* add this image to the processing queue */
       if (imgCt >= cameras.cameras_.length){
-        console.log(chalk.bold("\n  RECEIVED ALL 4 IMAGES  \n"));
+        console.log(chalk.bold("\n  RECEIVED ALL IMAGES  \n"));
         io.sockets.emit('process_msg', 'All images received from cameras');
-        // ImageProcessQueue.push([these4images], function(err){ processingTake = false; });
         var currImages = _.pluck(latestImages, 'rawPath');
         imageProcessQueue.push(currImages, function (err, file) { //console.log('file: '+file);
           if(err) console.log(chalk.red('ERROR processImage: '), err); //console.log('finished processing image.'.green);
