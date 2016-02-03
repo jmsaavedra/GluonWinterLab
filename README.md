@@ -10,7 +10,8 @@ Prerequisits:
 
 
 Installation:
-1.  $ sudo apt-get update
+```
+  1. $ sudo apt-get update
   - $ sudo apt-get upgrade
   - $ sudo apt-get install curl
   - $ sudo apt-get install tightvncserver
@@ -26,7 +27,7 @@ Installation:
   - $ cd timelapseApp
   - $ npm install
   - $ npm start
-
+```
 
 ### Mobile Sensor Hardware Design
 
