@@ -183,7 +183,7 @@ function Tether(){
           if(string.indexOf('Deleting')>-1){
             console.log('Detected Photo')
             var s = string.indexOf("'")
-            var e = string.indexOf("'",s+1)
+            var e = string.indexOf("'",s+1);
             //get the filename by finding the first and second '
             var filename = string.substr(s+1,e-s-1)
             console.log("Found file: "+filename)
@@ -287,21 +287,23 @@ function handleFile(filename, _currentTake){
     var postURL = (_currentTake !== null)? downloadURL + _currentTake: downloadURL;
     console.log("handleFile hit, currentTake= "+_currentTake + ", postURL = "+postURL);
     fs.stat(filename, function(err, stats) {
-
-      console.log("posting to: "+ postURL);
-      restler.post(postURL, {
-          multipart: true,
-          data: {
-              "id": "0",
-              "image": restler.file(filename, null, stats.size, null, "image/jpg")
-          }
-      }).on("complete", function(data) {
-          console.log("Received: "+JSON.stringify(data))
-          //delete file
-          fs.unlink(filename, function(e){
-            console.log("Deleted :"+filename)
-        	})
-      })
+      fs.writeFile(__dirname+'/img_'+_currentTake, filename, 'jpg', function(e){
+        if(e) console.log("error writeFile:", e);
+      });
+      // console.log("posting to: "+ postURL);
+      // restler.post(postURL, {
+      //     multipart: true,
+      //     data: {
+      //         "id": "0",
+      //         "image": restler.file(filename, null, stats.size, null, "image/jpg")
+      //     }
+      // }).on("complete", function(data) {
+      //     console.log("Received: "+JSON.stringify(data))
+      //     //delete file
+      //     fs.unlink(filename, function(e){
+      //       console.log("Deleted :"+filename)
+      //   	})
+      // })
     });
   // }
 }
