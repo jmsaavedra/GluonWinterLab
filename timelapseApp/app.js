@@ -132,7 +132,9 @@ function snap(){
   takeNumber++;
   imgCt = 0;
   console.log('\n------------------\n\n',chalk.green.bold.inverse('  Snap Photo!  ') + chalk.gray.bold('  ||  ')+chalk.cyan.bold('Take #')+takeNumber);
+
   io.sockets.emit('loading',null);
+
   cameras.takePhotos(function(e){
     if(!e) return true;
     console.log(chalk.red('ERROR takePhotos:'),e);
@@ -158,7 +160,7 @@ function snap(){
 
 
 /* Stop any PTPCamera processes -- this is an auto-launched app on OSX */
-var killAll = exec('killall PTPCamera gphoto2',function (error, stdout, stderr) {
+// var killAll = exec('killall PTPCamera gphoto2',function (error, stdout, stderr) {
   cameras = Cameras(function(e){
     if(e){
       console.log(chalk.red('camera setup failed:'), e);
@@ -186,7 +188,7 @@ var killAll = exec('killall PTPCamera gphoto2',function (error, stdout, stderr) 
         console.log(chalk.cyan.bold('\n>>> Time until next snap:'), moment(timeOfNextSnap).from(new Date()),chalk.gray('>>>'), timeOfNextSnap );
       });
     }
-  });
+  // });
 });
 
 /*** SOCKETS ***/
