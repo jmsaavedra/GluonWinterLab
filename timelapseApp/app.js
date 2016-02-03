@@ -32,7 +32,7 @@ var fs        = require('fs'),
 
 
 /* GLOBALS */
-// global.KEYS             = require(path.join(__dirname, '..', 'AuthKeys'));
+global.KEYS             = require(path.join(__dirname, '..', 'AuthKeys'));
 global.RAW_IMG_FOLDER   = path.join(__dirname,'_images-to-upload');
 global.SAVE_IMG_FOLDER  = path.join(__dirname, '_uploaded-images');
 global.chalk            = require('chalk');
