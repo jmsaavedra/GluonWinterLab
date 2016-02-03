@@ -13,6 +13,11 @@ var fs        = require('graceful-fs');
 var path      = require('path');
 
 
+var Flickr = require("flickrapi"),
+    flickrOptions = {
+      api_key: global.KEYS.FLICKR.key,
+      secret: global.KEYS.FLICKR.secret
+    };
 /***
 /* Upload a File routine
 */
@@ -26,14 +31,38 @@ module.exports.uploadImage = function(filePath, fileName, cb){
 
 function uploadFile (container, fpath, name, callback){
 
-    moveFile(container, fpath, name, function(e){
-      if(e) console.log(chalk.red('error on moveFile: ') + e);
-      // else console.log(chalk.yellow('SUCCESS copy image to: '),fpath);
-      var fileUrl = 'newfileurl';
-      console.log(chalk.cyan.bold('FILE URL: ') + fileUrl);
-      var data = {date: container, file: fileUrl, type: 'photo'};
-      callback(null, data);
+  Flickr.authenticate(FlickrOptions, function(error, flickr) {
+    var uploadOptions = {
+      photos: [{
+        title: name,
+        tags: [
+          "gluon",
+          "winterlab",
+          "ghent",
+          "belgium"
+        ],
+        photo: fpath
+      }]
+    };
+
+    Flickr.upload(uploadOptions, FlickrOptions, function(err, result) {
+      if(err) {
+        return console.error(error);
+      }
+      console.log("photos uploaded: ", result);
+      moveFile(container, fpath, name, function(e){
+        if(e) console.log(chalk.red('error on moveFile: ') + e);
+        // else console.log(chalk.yellow('SUCCESS copy image to: '),fpath);
+        var fileUrl = 'newfileurl';
+        console.log(chalk.cyan.bold('FILE URL: ') + fileUrl);
+        var data = {date: container, file: fileUrl, type: 'photo'};
+        callback(null, data);
+      });
     });
+
+  });
+
+
 }
 
 function moveFile(container, fpath, name, cb){
