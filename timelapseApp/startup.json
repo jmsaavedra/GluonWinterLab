@@ -1,0 +1,16 @@
+{
+
+	"name" : "cameras",
+	"script" : "app.js",
+	"env" : {
+		"FORCE_COLOR":"true"
+	},
+	"error_file" : "./logs/camera-app.stderr.log",
+	"out_file" : "./logs/camera-app.stdout.log",
+	"instances" : 1,
+	"min_uptime" : "180000",
+	"max_restarts" : 3,
+	"merge_logs" : true,
+	"exec_interpreter" : "node",
+	"exec_mode" : "fork"
+}

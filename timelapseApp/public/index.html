@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Camera Controller</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="/vendor/css/bootstrap.min.css">
+        <style>
+            body {
+                padding-top: 50px;
+                padding-bottom: 20px;
+            }
+        </style>
+        <link rel="stylesheet" href="/vendor/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="/main.css">
+
+        <script src="/vendor/js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    </head>
+    <body>
+    <!--[if lt IE 7]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+      <center>
+
+    <br><br><br>
+  </center>
+    <nav class="navbar inverse navbar-fixed-top" role="navigation">
+
+        <div  id="navbar">
+          <div class="navbar-header visible-lg-inline-block visible-md-inline-block visible-sm-inline-block">
+            <h2><strong>Timelapse Dashboard</strong></h2>
+            <h4 class="subtitle"><span style="">&emsp;Gluon Winter Lab &emsp;</span></h4>
+          </div>
+
+          <!-- <div class="visible-xs-block hidden-sm hidden-md hidden-lg" id="take-photo"> -->
+            <!-- <a class="navbar-brand" style="margin: 10px 0 30px;" href="/">Zoom City Bank</a> -->
+<!--             <button style="margin: 0 auto;" type="button" class="take-photo btn inverse btn-takephoto small navbar-button visible-xs-block  hidden-sm hidden-md hidden-lg">
+              <span class="glyphicon glyphicon-camera"></span>&nbsp;&nbsp;Take Photo
+            </button>
+          </div> -->
+
+<!--           <button style="float:right;" type="button" class="take-photo btn inverse btn-takephoto small navbar-button visible-sm-inline-block hidden-xs hidden-md hidden-lg">
+            <span class="glyphicon glyphicon-camera"></span>&nbsp;&nbsp;Take Photo
+          </button>
+ -->
+            <div class="nav navbar-nav navbar-right">
+              <button type="button" class="take-photo btn inverse btn-takephoto navbar-button" id="">
+                <span class="glyphicon glyphicon-camera"></span>&nbsp;&nbsp;Take Photo
+                </button>
+            </div>
+        </div> <!-- end navbar -->
+    </nav>
+
+    <div class="row photo-info col-12" id="photo-info" style=" ">
+      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 app-info" style="" >
+        <p class="date"><!-- Date:  --></p>
+        <p class="img-ct"><!-- Images Captured Today: --> </p>
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 app-info" style="">
+        <p class="next-snap"><!-- Nex snap time: --> </p>
+        <p class="countdown"><!-- countdown --> </p>
+      </div>
+    </div>
+
+
+
+
+    <div class="container view">
+      <div class="no-images" id="no-images" style="font-size: 1.2em; margin-bottom:300px;">Waiting for first snap...</div>
+      <div class="row images" id="img-holder"></div>
+      <hr/>
+    </div> <!-- /container -->
+
+    <footer>
+      <center><p><a class="restart">restart app</a></p></center>
+    </footer>
+
+
+    <!-- PROCESSING IMAGES MODAL -->
+    <div class="modal fade" id="processingDialog" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+              <h3>Processing Images...</h3>
+              <p class='loading-msg'></p>
+          </div>
+          <div class="modal-body">
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                <span class="sr-only">Processing Images...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ERROR MESSAGE MODAL -->
+    <div class="modal fade" id="errorDialog" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+              <h3>Error...</h3>
+              <p class='error-msg'></p>
+          </div>
+          <div class="modal-body">
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                <span class="sr-only">Error...</span>
+                <p class='error-msg'></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INITING APP MODAL -->
+    <div class="modal fade" id="restartDialog" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+              <h3>Restarting App...</h3>
+          </div>
+          <div class="modal-body">
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                <span class="sr-only">Initializing Cameras...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="output"></div>
+
+
+      <!-- <script src="/vendor/js/socket.io-1.3.3.js"></script> -->
+      <!-- <script src="/socket.io/socket.io.js"></script> -->
+      <script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.js"></script>
+      <!-- <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'> -->
+      <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+      <script>window.jQuery || document.write('<script src="/vendor/js/jquery-1.11.1.min.js"><\/script>')</script>
+      <script src="/vendor/js/bootstrap.min.js"></script>
+      <script src="/vendor/js/lodash.min.js"></script>
+      <script src="/js/main.js"></script>
+
+      <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+      <!--<script>
+          (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+          function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+          e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+          e.src='//www.google-analytics.com/analytics.js';
+          r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+          ga('create','UA-XXXXX-X');ga('send','pageview');
+      </script>-->
+    </body>
+</html>

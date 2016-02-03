@@ -1,0 +1,140 @@
+/* Fonts */
+
+@font-face{
+  font-family: TradeGothicLTCondensed;
+    src: url('../fonts/TradeGothicLTCondensedNo.18.ttf');
+}
+
+@font-face{
+  font-family: TradeGothicLTBoldCondensed;
+  src: url('../fonts/TradeGothicLTBoldCondensedNo.20.ttf');
+}
+
+@font-face{
+  font-family: Roboto;
+    src: url('http://fonts.googleapis.com/css?family=Roboto');
+}
+
+@font-face{
+  font-family: Ubuntu;
+    src: url('http://fonts.googleapis.com/css?family=Ubuntu');
+}
+
+@font-face{
+  font-family: Oswald;
+  src: url('http://fonts.googleapis.com/css?family=Oswald');
+}
+
+
+html{
+  max-width: 100%;
+  overflow-x: hidden;
+  body{
+      max-width: 100%;
+      section{
+        display:none;
+      }
+  }
+  section{
+    display:none;
+    color: #333;
+  }
+}
+
+
+/* info box containing dates, countdown */
+.photo-info{
+  font-size:1.3em;
+  padding-left:20px;
+  font-family: Ubuntu;
+  background-color:#CAE2EE; 
+  margin-top:5px; 
+  padding:25px 25px 15px 40px; 
+  border-width:1px; 
+  border-style:solid;
+}
+
+/* subtitle */
+.subtitle{
+  color:#CAE2EE;
+}
+
+
+/* file name */
+.inverse{
+  background: #043844;
+  color: #fff;
+  font-family: Ubuntu;
+}
+
+.image-path{
+  float: right;
+  padding: 11px 11px;
+  margin-left: 10px;
+  margin-top: 15px !important;
+  float: right !important;
+  /*margin-left: 50px;*/
+}
+
+
+#navbar {
+  padding: 15px 40px;
+  position: relative;
+}
+
+.navbar{
+  min-height: 115px;
+}
+
+.navbar-header{
+  position: absolute;
+  top: 40%;
+  margin: 0; padding: 0;
+}
+
+.btn-takephoto {
+  font-size:350%;
+  margin-right: 20px;
+  text-transform: uppercase;
+  font-family: TradeGothicLTBoldCondensed;
+  float:right;
+}
+.btn-takephoto.small{
+  font-size: 30px !important;
+  text-transform: uppercase;
+  font-family: TradeGothicLTBoldCondensed;
+  margin: 20px 10px;
+}
+
+.btn.inverse{
+  border: 1px solid #CAE2EE;
+  color: #fff;
+}
+
+.btn:hover{
+  color: #CAE2EE;
+  border: 1px solid #fff;
+}
+
+a.navbar-brand{
+  width: 280px;
+  height: 78px;
+  overflow:hidden;
+}
+
+.container.view{
+  padding-top: 30px;
+}
+
+.btn-group{ /* Camera Number */
+  padding-top:20px;
+  padding-left:15px;
+  font-weight: bold;
+  font-family: Ubuntu;
+  font-size: 170%;
+}
+
+
+
+/* Extra small devices (phones, less than 768px) */
+/* No media query since this is the default in Bootstrap */
