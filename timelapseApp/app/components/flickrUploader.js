@@ -11,13 +11,13 @@
 var moment    = require('moment');
 var fs        = require('graceful-fs');
 var path      = require('path');
+var Flickr = require("flickrapi");
 
+var FlickrOptions = {
+  api_key: global.KEYS.FLICKR.key,
+  secret: global.KEYS.FLICKR.secret
+};
 
-var Flickr = require("flickrapi"),
-    flickrOptions = {
-      api_key: global.KEYS.FLICKR.key,
-      secret: global.KEYS.FLICKR.secret
-    };
 /***
 /* Upload a File routine
 */
