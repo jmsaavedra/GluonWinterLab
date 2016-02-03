@@ -36,7 +36,7 @@ global.KEYS             = require(path.join(__dirname, '..', 'AuthKeys'));
 global.RAW_IMG_FOLDER   = path.join(__dirname,'_images-to-upload');
 global.SAVE_IMG_FOLDER  = path.join(__dirname, '_uploaded-images');
 global.chalk            = require('chalk');
-global.UPLOAD_FLAG      = false;
+global.UPLOAD_FLAG      = true;
 global.NUM_CAMERAS      = 1; //how many cameras are connected via USB?
 
 /* Custom Modules */
