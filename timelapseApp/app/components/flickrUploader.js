@@ -15,7 +15,10 @@ var Flickr = require("flickrapi");
 
 var FlickrOptions = {
   api_key: global.KEYS.FLICKR.key,
-  secret: global.KEYS.FLICKR.secret
+  secret: global.KEYS.FLICKR.secret,
+  user_id: global.KEYS.FLICKR.user_id,
+  access_token: global.KEYS.FLICKR.access_token,
+  access_token_secret: global.KEYS.FLICKR.access_token_secret
 };
 
 /***
