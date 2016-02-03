@@ -27,7 +27,9 @@ function ImageHandler(imgPath, cb){
 *  UPLOAD this file to Flickr
 *
 */
-handler.uploadToFlickr = function(img, callb){
+handler.uploadToFlickr = function(img, cb){
+
+	var callb = cb;
 
 	Flickr.uploadImage(img, path.basename(img), function(e, data){
 		if(e) return callb(chalk.red.bold('error uploading to Flickr: ')+e);
