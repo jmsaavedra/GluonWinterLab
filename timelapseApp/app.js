@@ -133,26 +133,26 @@ function snap(){
   imgCt = 0;
   console.log('\n------------------\n\n',chalk.green.bold.inverse('  Snap Photo!  ') + chalk.gray.bold('  ||  ')+chalk.cyan.bold('Take #')+takeNumber);
 
-  io.sockets.emit('loading',null);
+  // io.sockets.emit('loading',null);
 
   cameras.takePhotos(function(e){
     if(!e) return true;
     console.log(chalk.red('ERROR takePhotos:'),e);
     //rimraf(path.join(global.RAW_IMG_FOLDER, '*.jpg'), function(_e){
     //  if(_e) console.log('error deleting worthless images: '+_e);
-    if (takeNumber > 3){
-      Mailer.sendEmail('[timelapseApp] Failing on Snap', 'cameras.takePhotos error: \n\n[ '+e+' ]\n\n... restarting app now', function(er){
-        if(er) console.log(chalk.red('error sending nodemail: '),er);
-        console.log('>>> QUITTING APP in 30 secs...');
-        setTimeout(function(){
-          process.exit(0);
-        },120000);
-      });
-    } else{
-      console.log('trying SNAP() again in 30 secs...');
-      io.sockets.emit('error', e+'\n\nTrying snap again in 30 seconds...');
-      setTimeout(function(){snap();},30000);
-    }
+    // if (takeNumber > 3){
+    //   Mailer.sendEmail('[timelapseApp] Failing on Snap', 'cameras.takePhotos error: \n\n[ '+e+' ]\n\n... restarting app now', function(er){
+    //     if(er) console.log(chalk.red('error sending nodemail: '),er);
+    //     console.log('>>> QUITTING APP in 30 secs...');
+    //     setTimeout(function(){
+    //       process.exit(0);
+    //     },120000);
+    //   });
+    // } else{
+    //   console.log('trying SNAP() again in 30 secs...');
+    //   io.sockets.emit('error', e+'\n\nTrying snap again in 30 seconds...');
+    //   setTimeout(function(){snap();},30000);
+    // }
     //});
     return false;
   });
