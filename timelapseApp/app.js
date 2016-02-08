@@ -133,7 +133,7 @@ function snap(){
   imgCt = 0;
   console.log('\n------------------\n\n',chalk.green.bold.inverse('  Snap Photo!  ') + chalk.gray.bold('  ||  ')+chalk.cyan.bold('Take #')+takeNumber);
 
-  // io.sockets.emit('loading',null);
+  io.sockets.emit('loading',null);
 
   cameras.takePhotos(function(e){
     if(!e) return true;
