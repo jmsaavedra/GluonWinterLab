@@ -1,9 +1,9 @@
 
-var  _         = require('lodash'),
+var  _      = require('lodash'),
   async     = require('async'),
   fs        = require('graceful-fs'),
   later     = require('later'),
-  schedule = require('node-schedule'),
+  schedule  = require('node-schedule'),
   moment    = require('moment');
 
 later.date.localTime();

@@ -40,7 +40,7 @@ global.UPLOAD_FLAG      = true;
 global.NUM_CAMERAS      = 1; //how many cameras are connected via USB?
 
 /* Custom Modules */
-var Scheduler   = require('./app/components/scheduler');
+var Scheduler;
 var ImgHandler  = require('./app/components/imageHandler');
 var Cameras     = require('./app/components/cameras');
 var Mailer      = require('./app/components/nodemailer');
@@ -180,7 +180,7 @@ function snap(){
       console.log(chalk.gray.inverse('  HTTP Express Server Running!  '));
       var listeningString = ' Magic happening on port: '+ port +"  ";
       console.log(chalk.cyan.inverse(listeningString));
-
+      Scheduler = require('./app/components/scheduler');
       Scheduler.init(snap, function(timeOfNextSnap){
         moment.relativeTimeThreshold('s', 55);
         moment.relativeTimeThreshold('m', 55);
