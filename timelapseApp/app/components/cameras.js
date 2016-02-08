@@ -59,8 +59,8 @@ function Cameras(_cb){
 Cameras.prototype.takePhotos = takePhotos = function(_cb){
 
   var self=this;
-  // var now = moment().format('YYYY-MM-DD_HH-mm-ss');
-  var now = moment().format('HH-mm-ss');
+  var now = moment().format('YYYY-MM-DD_HH-mm-ss');
+  // var now = moment().format('HH-mm-ss');
 
   async.each(this.cameras_, function(cam, cb){
     // console.log("take picture on cam: "+JSON.stringify(cam));
@@ -74,7 +74,7 @@ Cameras.prototype.takePhotos = takePhotos = function(_cb){
           //self.cameras_.splice(_thisCamIdx, 1);
           return cb("snap error: no image returned, camera: " + cam.id);
         }
-        var filePath = global.RAW_IMG_FOLDER+'/'+now+'_cam'+'_'+cam.id+'.jpg';
+        var filePath = global.RAW_IMG_FOLDER+'/gluon_winterlab_timelapse_'+now+'.jpg';
         //TODO: async!
         fs.writeFileSync(filePath, data);
         cb(er);

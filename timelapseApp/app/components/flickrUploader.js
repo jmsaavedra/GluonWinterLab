@@ -42,6 +42,7 @@ function uploadFile (container, fpath, name, callback){
         tags: [
           "gluon",
           "winterlab",
+          "2016",
           "ghent",
           "belgium"
         ],
@@ -57,16 +58,13 @@ function uploadFile (container, fpath, name, callback){
       moveFile(container, fpath, name, function(e){
         if(e) console.log(chalk.red('error on moveFile: ') + e);
         // else console.log(chalk.yellow('SUCCESS copy image to: '),fpath);
-        var fileUrl = 'newfileurl';
-        console.log(chalk.cyan.bold('FILE URL: ') + fileUrl);
-        var data = {date: container, file: fileUrl, type: 'photo'};
+        var fileId = result[0];
+        console.log(chalk.cyan.bold('FILE id: ') + fileId);
+        var data = {date: container, file: fileId, type: 'photo'};
         callback(null, data);
       });
     });
-
   });
-
-
 }
 
 function moveFile(container, fpath, name, cb){
