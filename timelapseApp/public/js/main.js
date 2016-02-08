@@ -19,6 +19,7 @@ socket.on('image_count', function(count){
 
 socket.on('new-image', function(image){
   allImages.push(image);
+  $('#no-images').hide();
   console.log(">> socket.on: new-image, allImages length: "+allImages.length);
 });
 
