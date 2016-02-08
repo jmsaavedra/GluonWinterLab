@@ -74,7 +74,7 @@ Cameras.prototype.takePhotos = takePhotos = function(_cb){
           //self.cameras_.splice(_thisCamIdx, 1);
           return cb("snap error: no image returned, camera: " + cam.id);
         }
-        var filePath = global.RAW_IMG_FOLDER+'/gluon_winterlab_timelapse_'+now+'.jpg';
+        var filePath = global.RAW_IMG_FOLDER+'/gluon_timelapse_'+now+'.jpg';
         //TODO: async!
         fs.writeFileSync(filePath, data);
         cb(er);

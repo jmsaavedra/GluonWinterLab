@@ -31,6 +31,7 @@ socket.on('finished', function(latestImages, date, nextSnapTime){
   initCountdown(nextSnapTime);
 
   $('.date').html('<strong>Today\'s Date</strong>:&emsp;'+date);
+  $('#no-images').hide();
   $('#errorDialog').modal('hide');
   $('#processingDialog').modal('hide');
   $('#restartDialog').modal('hide');
@@ -52,7 +53,7 @@ socket.on('process_msg', function(msg){
 
 socket.on('error', function(msg){
   console.log('received error...',msg);
-  
+
   $('#processingDialog').modal('hide');
   $('#restartDialog').modal('hide');
   $('#errorDialog').modal('show');
@@ -67,7 +68,7 @@ socket.on('init', function(latestImages, date, nextSnapTime){
   initCountdown(nextSnapTime);
   allImages = latestImages;
   loadImages(0, function(){});
-  
+
   $('.date').html('<strong>Today\'s Date</strong>:&emsp;'+date);
   $('#errorDialog').modal('hide');
   $('#processingDialog').modal('hide');
@@ -86,7 +87,7 @@ function initCountdown(eventTime){
   var diffTime = moment(eventTime) - moment(new Date());
   var duration = moment.duration(diffTime+500, 'milliseconds');
   var interval = 1000;
-  
+
 
   countdownInterval = setInterval(function(){
     duration = moment.duration(duration - interval, 'milliseconds');
@@ -101,7 +102,7 @@ function initCountdown(eventTime){
 
 $(document).ready(function(){
   console.log("pageSize: "+pageSize + " imgs per page");
-  
+
   $('.take-photo').click(function(e){
     IMAGE_TAKER = true;
     $('#processingDialog').modal('show');
@@ -113,7 +114,6 @@ $(document).ready(function(){
     socket.emit('restart',{restart: 1});
     $('.no-images').show();
   });
-
 });
 
 
@@ -128,7 +128,7 @@ var loadImages = function(idx, cb){
         var thisImage = new ImageElement(allImages[j]);
         imagesHolder.appendChild(thisImage);//, imagesHolder.firstChild);
       }
-    } 
+    }
     IMAGE_TAKER = false;
 
     cb();
@@ -185,8 +185,8 @@ var _ButtonToolbar = function(image){
   this.btngroup.className = "btn-group";
   // this.btngroup.setAttribute("role", "group");
 
-  var camNumLabel = 'Camera '+ (parseInt(image.path[image.path.length-5])+1);
-  this.btngroup.appendChild(document.createTextNode(camNumLabel));
+  // var camNumLabel = 'Camera '+ (parseInt(image.path[image.path.length-5])+1);
+  // this.btngroup.appendChild(document.createTextNode(camNumLabel));
   // this.btngroup.appendChild(new _Button(image,'details', 'search',false));
   // this.btngroup.appendChild(new _Button(image,'approve', 'ok', image.approved));
   // this.btngroup.appendChild(new _Button(image,'heart', 'heart', image.hearted));
