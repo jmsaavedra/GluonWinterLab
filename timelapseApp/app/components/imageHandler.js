@@ -34,7 +34,10 @@ handler.uploadToFlickr = function(img, cb){
 	Flickr.uploadImage(img, path.basename(img), function(e, data){
 		if(e) return callb(chalk.red.bold('error uploading to Flickr: ')+e);
 		if(!data) return callb(chalk.red.bold('NO DATA RETURNED when uploading to Flickr: ')+e);
+		console.log('uploadImage data: ', data);
+		console.log('uploadImage data: ', JSON.stringify(data));
 		callb(e, path.basename(img), JSON.parse(data));
+		//callb(e, path.basename(img), JSON.parse(data));
 	});
 };
 
