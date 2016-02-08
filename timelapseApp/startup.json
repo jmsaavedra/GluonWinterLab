@@ -1,6 +1,6 @@
 {
 
-	"name" : "cameras",
+	"name" : "timelapse",
 	"script" : "app.js",
 	"env" : {
 		"FORCE_COLOR":"true"
