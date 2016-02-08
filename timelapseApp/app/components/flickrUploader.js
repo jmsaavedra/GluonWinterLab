@@ -43,6 +43,7 @@ function uploadFile (container, fpath, name, callback){
           "gluon",
           "winterlab",
           "2016",
+          "timelapse",
           "ghent",
           "belgium"
         ],
