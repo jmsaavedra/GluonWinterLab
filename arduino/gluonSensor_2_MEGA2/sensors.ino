@@ -106,7 +106,7 @@ void updateDust() {
 
 int getDustVal() {
   updateDust();
-  Serial.print(F("dustVal: "));
+  Serial.print(F(" dustVal: "));
   Serial.println(dustVal);
   return dustVal;
 }

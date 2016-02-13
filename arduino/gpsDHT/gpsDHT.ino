@@ -4,6 +4,12 @@
 #include <SD.h>
 #include <avr/sleep.h>
 
+#include "DHT.h"
+
+#define DHTPIN 6     // what pin we're connected to
+#define DHTTYPE DHT22   // DHT 22  (AM2302)
+DHT dht(DHTPIN, DHTTYPE);
+
 // Ladyada's logger modified by Bill Greiman to use the SdFat library
 //
 // This code shows how to listen to the GPS module in an interrupt
@@ -167,7 +173,8 @@ void useInterrupt(boolean v) {
 
 void loop() {
 
-  vuUpdate();
+  float h = dht.readHumidity();
+  float t = dht.readTemperature();
 
   if (! usingInterrupt) {
     // read data from the GPS in the 'main loop'
@@ -200,20 +207,21 @@ void loop() {
 
     // Rad. lets log it!
     Serial.println(F("Log"));
- 
-//    uint8_t stringsize = strlen(stringptr);
-//    if (stringsize != logfile.write((char *)'-', (uint8_t) 1))    //write the string to the SD file
-//      error(4);
+
+    //    uint8_t stringsize = strlen(stringptr);
+    //    if (stringsize != logfile.write((char *)'-', (uint8_t) 1))    //write the string to the SD file
+    //      error(4);
     logfile.print("$data,");
-//    logfile.print("20");logfile.print(GPS.year, DEC);logfile.print('/'); 
-//    logfile.print(GPS.month, DEC);logfile.print('/'); 
-//    logfile.print(GPS.day, DEC); logfile.print(',');
-//    logfile.print(GPS.hour, DEC); logfile.print(':');
-//    logfile.print(GPS.minute, DEC); logfile.print(':');
-//    logfile.print(GPS.seconds, DEC); logfile.print(',');
-    logfile.print(GPS.latitudeDegrees, 6); logfile.print(","); 
-    logfile.print(GPS.longitudeDegrees, 6); logfile.print(","); 
-    logfile.println(getNoiseAvg(), 2); //append dust value
+    //    logfile.print("20");logfile.print(GPS.year, DEC);logfile.print('/');
+    //    logfile.print(GPS.month, DEC);logfile.print('/');
+    //    logfile.print(GPS.day, DEC); logfile.print(',');
+    //    logfile.print(GPS.hour, DEC); logfile.print(':');
+    //    logfile.print(GPS.minute, DEC); logfile.print(':');
+    //    logfile.print(GPS.seconds, DEC); logfile.print(',');
+    logfile.print(GPS.latitudeDegrees, 6); logfile.print(",");
+    logfile.print(GPS.longitudeDegrees, 6);
+    logfile.print(","); logfile.print(h, 2);
+    logfile.print(","); logfile.print(t, 2); //append temp and humidity
     // if (strstr(stringptr, "RMC") || strstr(stringptr, "GGA"))   logfile.flush();
     if (strstr(stringptr, "RMC"))   logfile.flush();
     Serial.println();
@@ -226,9 +234,9 @@ void loop() {
 //    logfile.print(GPS.utime, 4);
 //    logfile.print(",");
 //    logfile.print(GPS.latitudeDegrees, 4);
-//    logfile.print(","); 
+//    logfile.print(",");
 //    logfile.print(GPS.longitudeDegrees, 4);
-//    logfile.print(","); 
+//    logfile.print(",");
 //    logfile.println(getNoiseAvg(), 2); //append dust value
 //    if (strstr(stringptr, "RMC") || strstr(stringptr, "GGA"))   logfile.flush();
 //    Serial.println();
@@ -236,7 +244,7 @@ void loop() {
 //
 //  vuUpdate();
 //
-//} 
+//}
 //
 
 

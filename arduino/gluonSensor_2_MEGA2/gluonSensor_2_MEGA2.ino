@@ -31,7 +31,7 @@ Adafruit_GPS GPS(&mySerial);
 // Set to 'true' if you want to debug and listen to the raw GPS sentences
 #define GPSECHO  false
 /* set to true to only log to SD when GPS has a fix, for debugging, keep it false */
-#define LOG_FIXONLY false
+#define LOG_FIXONLY true
 
 // this keeps track of whether we're using the interrupt
 // off by default!
@@ -66,9 +66,6 @@ const int sampleWindow = 50; // Sample window width in mS (50 mS = 20Hz)
 unsigned int sample;
 
 void setup() {
-  // for Leonardos, if you want to debug SD issues, uncomment this line
-  // to see serial output
-  //while (!Serial);
 
   // connect at 115200 so we can read the GPS fast enough and echo without dropping chars
   // also spit it out
@@ -157,9 +154,13 @@ void loop() {
     // we end up not listening and catching other sentences!
     // so be very wary if using OUTPUT_ALLDATA and trying to print out data
     //Serial.println(GPS.lastNMEA());   // this also sets the newNMEAreceived() flag to false
+    
+    char *stringptr = GPS.lastNMEA();
+    
     if (!GPS.parse(GPS.lastNMEA()))   // this also sets the newNMEAreceived() flag to false
       return;  // we can fail to parse a sentence in which case we should just wait for another
-
+    
+    
     // Sentence parsed!
     Serial.println(F("OK"));
     if (LOG_FIXONLY && !GPS.fix) {
@@ -170,10 +171,13 @@ void loop() {
     // Rad. lets log it!
     Serial.println(F("Log"));
 
-    char *stringptr = GPS.lastNMEA();
-    uint8_t stringsize = strlen(stringptr) - 1; //subtract 2 to eliminate <cr>
-    if (stringsize != logfile.write((uint8_t *)stringptr, stringsize))    //write the string to the SD file
-      error(4);
+    
+//    uint8_t stringsize = strlen(stringptr) - 1; //subtract 2 to eliminate <cr>
+//    if (stringsize != logfile.write((uint8_t *)stringptr, stringsize))    //write the string to the SD file
+//      error(4);
+    logfile.print("$data,"); 
+    logfile.print(GPS.latitudeDegrees, 6); logfile.print(",");
+    logfile.print(GPS.longitudeDegrees, 6);
 
 #if defined(USE_DHT)
     logfile.print(","); logfile.print(h, 2);
@@ -181,24 +185,26 @@ void loop() {
 #endif
 
 #if defined(USE_MIC)
-    logfile.print(","); logfile.println(getAmplitudeAvg(), 2); //append microphone sound
+    logfile.print(","); logfile.print(getAmplitudeAvg(), 2); //append microphone sound
+#endif
+
+#if defined(USE_ACCEL)
+    logfile.print(","); logfile.print(getAccelVal(), 2); //append dust value
 #endif
 
 #if defined(USE_DUST)
     logfile.print(","); logfile.println(getDustVal(), DEC); //append dust value
 #endif
 
-#if defined(USE_ACCEL)
-    logfile.print(","); logfile.println(getAccelVal(), 2); //append dust value
-#endif
-
-    if (strstr(stringptr, "RMC"))   logfile.flush();
-    Serial.println();
+    if (strstr(stringptr, "RMC"))
+      logfile.flush();
+      
+  }
 
 #if defined(USE_NEOPIXEL)
-    updatePixels();
+  updatePixels();
 #endif
-  }
+
 }
 
 

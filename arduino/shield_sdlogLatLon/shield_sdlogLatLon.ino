@@ -14,7 +14,7 @@
 // Tested and works great with the Adafruit Ultimate GPS Shield
 // using MTK33x9 chipset
 //    ------> http://www.adafruit.com/products/
-// Pick one up today at the Adafruit electronics shop
+// Pick one up today at the Adafruit electronics shop 
 // and help support open source hardware & software! -ada
 // Fllybob added 10 sec logging option
 SoftwareSerial mySerial(8, 7);
@@ -22,9 +22,9 @@ Adafruit_GPS GPS(&mySerial);
 
 // Set GPSECHO to 'false' to turn off echoing the GPS data to the Serial console
 // Set to 'true' if you want to debug and listen to the raw GPS sentences
-#define GPSECHO  false
+#define GPSECHO  true
 /* set to true to only log to SD when GPS has a fix, for debugging, keep it false */
-#define LOG_FIXONLY true
+#define LOG_FIXONLY false  
 
 // this keeps track of whether we're using the interrupt
 // off by default!
@@ -46,7 +46,7 @@ uint8_t parseHex(char c) {
   if (c < 'A')
     return 0;
   if (c <= 'F')
-    return (c - 'A') + 10;
+    return (c - 'A')+10;
 }
 
 // blink out an error code
@@ -59,15 +59,15 @@ void error(uint8_t errno) {
    Serial.println(card.errorData(), HEX);
    }
    */
-  while (1) {
+  while(1) {
     uint8_t i;
-    for (i = 0; i < errno; i++) {
+    for (i=0; i<errno; i++) {
       digitalWrite(ledPin, HIGH);
       delay(100);
       digitalWrite(ledPin, LOW);
       delay(100);
     }
-    for (i = errno; i < 10; i++) {
+    for (i=errno; i<10; i++) {
       delay(200);
     }
   }
@@ -81,7 +81,7 @@ void setup() {
   // connect at 115200 so we can read the GPS fast enough and echo without dropping chars
   // also spit it out
   Serial.begin(115200);
-  Serial.println(F("Ultimate GPSlogger Shield"));
+  Serial.println("\r\nUltimate GPSlogger Shield");
   pinMode(ledPin, OUTPUT);
 
   // make sure that the default chip select pin is set to
@@ -91,14 +91,14 @@ void setup() {
   // see if the card is present and can be initialized:
   if (!SD.begin(chipSelect, 11, 12, 13)) {
     //if (!SD.begin(chipSelect)) {      // if you're using an UNO, you can use this line instead
-    Serial.println(F("Card init. failed!"));
+    Serial.println("Card init. failed!");
     error(2);
   }
   char filename[15];
   strcpy(filename, "GPSLOG00.TXT");
   for (uint8_t i = 0; i < 100; i++) {
-    filename[6] = '0' + i / 10;
-    filename[7] = '0' + i % 10;
+    filename[6] = '0' + i/10;
+    filename[7] = '0' + i%10;
     // create if does not exist, do not open existing, write, sync after write
     if (! SD.exists(filename)) {
       break;
@@ -106,12 +106,12 @@ void setup() {
   }
 
   logfile = SD.open(filename, FILE_WRITE);
-  if ( ! logfile ) {
-    Serial.print(F("Couldnt create "));
+  if( ! logfile ) {
+    Serial.print("Couldnt create "); 
     Serial.println(filename);
     error(3);
   }
-  Serial.print(F("Writing to "));
+  Serial.print("Writing to "); 
   Serial.println(filename);
 
   // connect to the GPS at the desired rate
@@ -133,8 +133,8 @@ void setup() {
   // every 1 millisecond, and read data from the GPS for you. that makes the
   // loop code a heck of a lot easier!
   useInterrupt(true);
-  vuSetup();
-  Serial.println(F("Ready!"));
+
+  Serial.println("Ready!");
 }
 
 
@@ -142,12 +142,12 @@ void setup() {
 SIGNAL(TIMER0_COMPA_vect) {
   char c = GPS.read();
   // if you want to debug, this is a good time to do it!
-#ifdef UDR0
-  if (GPSECHO)
-    if (c) UDR0 = c;
-  // writing direct to UDR0 is much much faster than Serial.print
-  // but only one character can be written at a time.
-#endif
+  #ifdef UDR0
+      if (GPSECHO)
+        if (c) UDR0 = c;  
+      // writing direct to UDR0 is much much faster than Serial.print 
+      // but only one character can be written at a time. 
+  #endif
 }
 
 void useInterrupt(boolean v) {
@@ -157,7 +157,7 @@ void useInterrupt(boolean v) {
     OCR0A = 0xAF;
     TIMSK0 |= _BV(OCIE0A);
     usingInterrupt = true;
-  }
+  } 
   else {
     // do not call the interrupt function COMPA anymore
     TIMSK0 &= ~_BV(OCIE0A);
@@ -166,9 +166,6 @@ void useInterrupt(boolean v) {
 }
 
 void loop() {
-
-  vuUpdate();
-
   if (! usingInterrupt) {
     // read data from the GPS in the 'main loop'
     char c = GPS.read();
@@ -176,45 +173,41 @@ void loop() {
     if (GPSECHO)
       if (c) Serial.print(c);
   }
-
+  
   // if a sentence is received, we can check the checksum, parse it...
   if (GPS.newNMEAreceived()) {
     // a tricky thing here is if we print the NMEA sentence, or data
-    // we end up not listening and catching other sentences!
+    // we end up not listening and catching other sentences! 
     // so be very wary if using OUTPUT_ALLDATA and trying to print out data
-
-    // Don't call lastNMEA more than once between parse calls!  Calling lastNMEA
+    
+    // Don't call lastNMEA more than once between parse calls!  Calling lastNMEA 
     // will clear the received flag and can cause very subtle race conditions if
     // new data comes in before parse is called again.
     char *stringptr = GPS.lastNMEA();
-
+    
     if (!GPS.parse(stringptr))   // this also sets the newNMEAreceived() flag to false
       return;  // we can fail to parse a sentence in which case we should just wait for another
 
-    // Sentence parsed!
-    Serial.println(F("OK"));
+    // Sentence parsed! 
+    Serial.println("OK");
     if (LOG_FIXONLY && !GPS.fix) {
-      Serial.print(F("No Fix"));
+      Serial.print("No Fix");
       return;
     }
 
     // Rad. lets log it!
-    Serial.println(F("Log"));
- 
-//    uint8_t stringsize = strlen(stringptr);
-//    if (stringsize != logfile.write((char *)'-', (uint8_t) 1))    //write the string to the SD file
-//      error(4);
+    Serial.println("Log");
+
+    uint8_t stringsize = strlen(stringptr);
+    if (stringsize != logfile.write((uint8_t *)stringptr, stringsize))    //write the string to the SD file
+        error(4);
     logfile.print("$data,");
-//    logfile.print("20");logfile.print(GPS.year, DEC);logfile.print('/'); 
-//    logfile.print(GPS.month, DEC);logfile.print('/'); 
-//    logfile.print(GPS.day, DEC); logfile.print(',');
-//    logfile.print(GPS.hour, DEC); logfile.print(':');
-//    logfile.print(GPS.minute, DEC); logfile.print(':');
-//    logfile.print(GPS.seconds, DEC); logfile.print(',');
-    logfile.print(GPS.latitudeDegrees, 6); logfile.print(","); 
-    logfile.print(GPS.longitudeDegrees, 6); logfile.print(","); 
-    logfile.println(getNoiseAvg(), 2); //append dust value
-    // if (strstr(stringptr, "RMC") || strstr(stringptr, "GGA"))   logfile.flush();
+    logfile.print(GPS.hour, DEC); logfile.print(':');
+    logfile.print(GPS.minute, DEC); logfile.print(':');
+    logfile.print(GPS.seconds, DEC); logfile.print(',');
+    logfile.print(GPS.latitudeDegrees, 4); logfile.print(","); 
+    logfile.print(GPS.longitudeDegrees, 4);
+//    if (strstr(stringptr, "RMC") || strstr(stringptr, "GGA"))   logfile.flush();
     if (strstr(stringptr, "RMC"))   logfile.flush();
     Serial.println();
   }
@@ -222,21 +215,4 @@ void loop() {
 
 
 /* End code */
-
-//    logfile.print(GPS.utime, 4);
-//    logfile.print(",");
-//    logfile.print(GPS.latitudeDegrees, 4);
-//    logfile.print(","); 
-//    logfile.print(GPS.longitudeDegrees, 4);
-//    logfile.print(","); 
-//    logfile.println(getNoiseAvg(), 2); //append dust value
-//    if (strstr(stringptr, "RMC") || strstr(stringptr, "GGA"))   logfile.flush();
-//    Serial.println();
-//  }
-//
-//  vuUpdate();
-//
-//} 
-//
-
 
